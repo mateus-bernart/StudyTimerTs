@@ -7,12 +7,23 @@ import { ITask } from "../Types/task";
 
 function App() {
   const [tasks, setTasks] = useState<ITask[] | []>([]);
+  const [selected, setSelected] = useState<ITask>();
+
+  function selectTask(selectedTask: ITask) {
+    setSelected(selectedTask);
+    setTasks((oldTasks) =>
+      oldTasks.map((task) => ({
+        ...task,
+        selected: task.id === selectedTask.id ? true : false,
+      }))
+    );
+  }
 
   return (
     <div className={style.AppStyle}>
       <Form setTasks={setTasks} />
-      <List tasks={tasks} />
-      <Stopwatch />
+      <List selectTask={selectTask} tasks={tasks} />
+      <Stopwatch selected={selected} />
     </div>
   );
 }
